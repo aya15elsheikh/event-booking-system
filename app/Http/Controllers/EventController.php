@@ -14,7 +14,7 @@ class EventController extends Controller
     public function index()
     {   
         $events= Event::get();
-        return view('events.index',compact('events'));  
+        return view('event.index',compact('events'));  
     }
 
     /**
@@ -36,7 +36,7 @@ class EventController extends Controller
             'price' => 'required|numeric',
             'availableTickets' => 'required|integer',
             'date' => 'required|date',
-            'description' => 'required|string',
+            'description' => 'required|string'
         ]);
 
         $event= Event::create([
@@ -54,7 +54,9 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $event=Event::findOrFail($id);
+        return view('event.show',compact('event'));
+
     }
 
     /**
@@ -62,7 +64,8 @@ class EventController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $event=Event::findOrFail($id);
+        return view('event.edit',compact('event','id'));
     }
 
     /**
@@ -70,14 +73,32 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'availableTickets' => 'required|integer',
+            'date' => 'required|date',
+            'description' => 'required|string'
+          ]);
+          
+          $event= Event::findOrFail($id);
+          $event->name = $request->name;
+          $event->description= $request->description;
+          $event->price = $request->price;
+          $event->availableTickets = $request->availableTickets;
+          $event->date = $request->date;
+          $event->save();
+          return redirect()->route('events.index')->with('success', 'User updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(string $id)
     {
-        //
+        $event = Event::findOrFail($id);
+        $event->delete();
+        return redirect()->route('events.index')->with('success', 'User deleted successfully');
     }
 }
