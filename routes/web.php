@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\BookingController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -23,15 +24,12 @@ Route::middleware(['auth'])->group(function () {
     })->name("home");
 });
 
-// Route::resource('events', EventController::class)->middleware([AdminMiddleware::class,'auth']);
+Route::resource('events', EventController::class)->only(['create','store', 'update','edit', 'destroy'])->middleware([AdminMiddleware::class,'auth']);
 
+Route::get('/events/admin', [EventController::class, 'adminPanel'])->middleware([AdminMiddleware::class, 'auth'])->name('admin');
 
 Route::resource('events', EventController::class)->only(['index', 'show']);
 
-Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
-    Route::get('events/create', [EventController::class, 'create']);
-    Route::post('events', [EventController::class, 'store']);
-    Route::get('events/{event}/edit', [EventController::class, 'edit']);
-    Route::put('events/{event}', [EventController::class, 'update']);
-    Route::delete('events/{event}', [EventController::class, 'destroy']);
-});
+Route::get('/events/{event}/book', [BookingController::class, 'book'])->middleware(['auth'])->name('book');
+
+Route::get('/bookhistory', [BookingController::class, 'history'])->middleware(['auth'])->name('book.history');

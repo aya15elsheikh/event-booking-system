@@ -46,7 +46,7 @@ class EventController extends Controller
             'date'=>$request->date,
             'description'=>$request->description,
         ]);
-        return redirect()->route('events.index')->with('success', 'Event added successfully');
+        return redirect()->route('admin')->with('success', 'Event added successfully');
     }
     
     /**
@@ -56,6 +56,12 @@ class EventController extends Controller
     {
         $event=Event::findOrFail($id);
         return view('event.show',compact('event'));
+    }
+
+    public function adminPanel()
+    {
+        $events= Event::get();
+        return view('users.adminPanel',compact('events')); 
     }
 
     /**
@@ -87,7 +93,7 @@ class EventController extends Controller
           $event->availableTickets = $request->availableTickets;
           $event->date = $request->date;
           $event->save();
-          return redirect()->route('events.index')->with('success', 'User updated successfully');
+          return redirect()->route('admin')->with('success', 'User updated successfully');
     }
 
     /**
@@ -98,6 +104,6 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         $event->delete();
-        return redirect()->route('events.index')->with('success', 'User deleted successfully');
+        return redirect()->route('events.index')->with('success', 'Event deleted successfully');
     }
 }

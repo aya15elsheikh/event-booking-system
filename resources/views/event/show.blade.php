@@ -8,5 +8,9 @@
   <p><strong>date: </strong> {{$event->date}}</p>
   <p><strong>price: </strong> {{$event->price}}</p>
   <p><strong>Available tickets: </strong> {{$event->availableTickets}}</p>
+  <form action="{{route('book', $event->id)}}">
+    @method('GET')
+     <button class="btn btn-primary">Book</button>
+  </form>
 </div>
 @endsection

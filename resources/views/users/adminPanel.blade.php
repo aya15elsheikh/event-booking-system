@@ -14,8 +14,7 @@
         <th scope="col">Date</th>
         <th scope="col">Available Tickets</th>
         <th scope="col">Price</th>
-        <th scope="col">show</th>
-
+        <th scope="col">options</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +27,15 @@
         <td>{{$event->date}}</td>
         <td>{{$event->availableTickets}}</td>
         <td>{{$event->price}}</td>
-        <td><a href="{{route('events.show', $event->id)}}" class ="btn btn-primary">show</a></td>
+        <td>
+          <a href="{{route('events.show', $event->id)}}" class ="btn btn-secondary">show</a>
+          <a href="{{route('events.edit', $event->id)}}" class ="btn btn-primary">Edit</a>
+          <form action={{route('events.destroy', $event->id)}} method="POST">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </td>
       </tr>
       @endforeach
     </tbody>
