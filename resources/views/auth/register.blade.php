@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.login')
 @section('title','register')
 @section('content')
-<div class="container">
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
     <form action="{{route ('register.post')}}" method="POST" class="ms-auto me-auto  " style="width: 500px">
         @csrf
         <div class="mb-3">

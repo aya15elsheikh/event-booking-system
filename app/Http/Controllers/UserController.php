@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
@@ -11,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {      
-        return view('event.index');
+        return view("users.index");
     }
 
     /**
@@ -35,19 +36,17 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user=User::findOrFail($id);
-
-        return view('users.show',compact('user'));
-       
+        $user = User::with(['role'])->findOrFail($id);
+        return view('users.show', compact('user'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
      */public function edit(string $id)
     {
         $user=User::findOrFail($id);
-        return view('users.edit',compact('user','id'));
-       
+        return view('users.edit',compact('user'));
     }
 
     /**
@@ -58,16 +57,21 @@ class UserController extends Controller
         $request->validate([
           'name'=>'required|max:255',
             'email' =>'required|email',
-            'password'=>'required|min:8'
         ]);
         
         $user= User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password= Hash::make($request->password);
-        $user->role_id=$request->role_id;
         $user->save();
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        $events= Event::get();
+        return redirect()->back()->with('success', 'User created successfully!');
+    }
+
+    public function adminPanel()
+    {
+        $events= Event::get();
+        $users= User::get();
+        return view('users.adminPanel',compact('events', 'users')); 
     }
 
     /**
@@ -78,11 +82,5 @@ class UserController extends Controller
         $user =User::findOrFail($id);
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
-    }
-
-
-    public function bookEvent (string $id)
-    {
-        
     }
 }

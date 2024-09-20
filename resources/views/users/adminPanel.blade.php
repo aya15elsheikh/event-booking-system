@@ -42,4 +42,37 @@
   </table>
 </div>
 
+
+<div class="container">
+  <h1>Users</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($users as $user)
+      <tr>
+        <th scope="row">{{$event->id}}</th>
+        <td>{{$user->name}}</td>
+        <td>{{$user->email}}</td>
+        <td>{{$user->role_id}}</td>
+        <td>
+          <a href="{{route('users.edit', $user->id)}}" class ="btn btn-primary">Edit</a>
+          <form action={{route('users.destroy', $user->id)}} method="POST">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+
 @endsection

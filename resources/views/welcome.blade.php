@@ -177,7 +177,7 @@
     <div class="hero">
         <h1 class="display-4">Event Booking system</h1>
         <p class="lead">We are glad to have you here. Explore our Events.</p>
-        <a class="btn btn-primary btn-lg" href="login" role="button">Get Started</a>
+        <a class="btn btn-primary btn-lg" href="{{route('events.index')}}" role="button">Events</a>
     </div>
 </div>
 

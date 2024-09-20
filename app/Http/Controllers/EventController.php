@@ -58,12 +58,7 @@ class EventController extends Controller
         return view('event.show',compact('event'));
     }
 
-    public function adminPanel()
-    {
-        $events= Event::get();
-        return view('users.adminPanel',compact('events')); 
-    }
-
+   
     /**
      * Show the form for editing the specified resource.
      */

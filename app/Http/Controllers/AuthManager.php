@@ -31,13 +31,18 @@ class AuthManager extends Controller
 
         $credentials = $request->Only('email','password');
         if (Auth::attempt($credentials)){
-            return redirect()->intended(route('home'));  
+            return redirect()->intended(route('events.index'));  
         }
         return redirect(route('login'))->with("error","data are not valid");
     }
 
     function registerPost(Request $request)
     {
+        if( User::count() === 0 ){
+           $role_id=1;
+        }else{
+            $role_id=2;
+        }
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -47,7 +52,7 @@ class AuthManager extends Controller
         $user= User::create([
             'name'=>$request->name,
             'email'=>$request->email,
-            'role_id'=>$request->role_id ,
+            'role_id'=>$role_id ,
             'password'=>Hash::make($request->password)
         ]);
         return redirect()->route("home")->with("success","user registerd");        

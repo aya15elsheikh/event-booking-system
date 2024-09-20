@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookingController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -26,10 +27,12 @@ Route::middleware(['auth'])->group(function () {
 
 Route::resource('events', EventController::class)->only(['create','store', 'update','edit', 'destroy'])->middleware([AdminMiddleware::class,'auth']);
 
-Route::get('/events/admin', [EventController::class, 'adminPanel'])->middleware([AdminMiddleware::class, 'auth'])->name('admin');
+Route::get('/users/admin', [UserController::class, 'adminPanel'])->middleware([AdminMiddleware::class, 'auth'])->name('admin');
 
 Route::resource('events', EventController::class)->only(['index', 'show']);
 
 Route::get('/events/{event}/book', [BookingController::class, 'book'])->middleware(['auth'])->name('book');
 
 Route::get('/bookhistory', [BookingController::class, 'history'])->middleware(['auth'])->name('book.history');
+
+Route::resource('users', UserController::class)->middleware(['auth']);
